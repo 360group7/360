@@ -1,11 +1,9 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -14,7 +12,6 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -43,6 +40,7 @@ import model.StudentEmployment;
  * ReportingGUI displays the various options for running reports on student
  * data.
  * @author Thomas Van Riper
+ * @author Louis Yang.
  * December 2nd, 2016
  *
  */
@@ -101,7 +99,7 @@ public class ReportingGUI extends JPanel implements ActionListener
 	{
 		pnlButtons = new JPanel();
 		
-		btnGrad = new JButton("Employment by Graduation Date");
+		btnGrad = new JButton("Employed Students by Graduation Date");
 		btnGrad.addActionListener(this);
 		
 		btnSkill = new JButton("Employment and Skills");
@@ -545,18 +543,21 @@ public class ReportingGUI extends JPanel implements ActionListener
 			gradData[i][3] = degree.getProgram();
 			List<StudentEmployment> employment 
 			= StudentEmploymentDB.getStudentEmploymentsOfUWNetID(uwNetid);
-			if (employment.size() != 0) {
-				totalEmployed++;
-			}
 			String employer = "";
 			String position = "";
-			for (int j = 0; j < employment.size(); j++) {
+			if (employment.size() != 0) {
+				totalEmployed++;
+				employer = employment.get(0).getEmployer();
+				position = employment.get(0).getPosition();
+			}
+			for (int j = 1; j < employment.size(); j++) {
 				employer += (", " + employment.get(j).getEmployer());
 				position += (", " + employment.get(j).getPosition());
 			}
 			gradData [i][4] = employer;
 			gradData [i][5] = position;
 		}
+		
 		return totalEmployed;
 	}
 	

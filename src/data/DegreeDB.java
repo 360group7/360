@@ -9,7 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Degree;
+/**
+ * DegreeDB represents the database of Degree.
+ * @author Louis Yang.
 
+ */
 public class DegreeDB {
 	
 	private static Connection myConnection;

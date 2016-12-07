@@ -10,12 +10,27 @@ import java.util.List;
 
 import model.StudentSkill;
 
+/**
+ * This class contains methods to access StudentSKill table data.
+ * The system allows to list, search, and add a StudentSKill.
+ * 
+ * @author Jieun Lee (jieun212@uw.edu)
+ * @version 12-06-2016
+ */
 public class StudentSkillDB {
 
+	/** A DB Connection */
 	private static Connection myConnection;
+	
+	/** A List of StudentSKill */
 	private static List<StudentSkill> myStudentSkillList;
 	
-	// getskills
+	/**
+	 * Get a list of StudentSKill.
+	 * 
+	 * @return A list of Student Skill.
+	 * @throws SQLException
+	 */
 	public static List<StudentSkill> getStudentSkills() throws SQLException {
 		if (myConnection == null) {
 			myConnection = DataConnection.getConnection();
@@ -49,7 +64,12 @@ public class StudentSkillDB {
 	}
 	
 	
-	// get skill by stu-skill id
+	/**
+	 * Get a StudentSkill which has givne StudentSKill id.
+	 * @param theId StudentSKill id
+	 * @return A StudentSKill
+	 * @throws SQLException
+	 */
 	public static StudentSkill getStudentSkills(final String theId) throws SQLException {
 		if (myConnection == null) {
 			myConnection = DataConnection.getConnection();
@@ -83,6 +103,12 @@ public class StudentSkillDB {
 		return null;
 	}
 	
+	/**
+	 * Get a list of StudentSKill of given uw net id.
+	 * @param theUwnetId UW net id
+	 * @return A list of StudentSKill of given Uwnetid.
+	 * @throws SQLException
+	 */
 	public static List<StudentSkill> getStudentSKillsOfUWNetID(final String theUwnetId) throws SQLException {
 		if (myConnection == null) {
 			myConnection = DataConnection.getConnection();
@@ -117,7 +143,12 @@ public class StudentSkillDB {
 	
 	
 	
-	// add skill
+	/**
+	 * Add a StudentSKill into the StudentSKill table
+	 * 
+	 * @param theSkill A StudentSKill
+	 * @return True if StudentSKill is added succssfully.
+	 */
 	public static boolean addStudentSkill(StudentSkill theSkill) {
 		String sql = "insert into StudentSkill(uwnetId, skillId) values "
 				+ "(?, ?); ";
@@ -143,9 +174,6 @@ public class StudentSkillDB {
 		}
 		return true;
 	}
-	
-	
-	
-	
+
 	
 }

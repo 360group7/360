@@ -2,6 +2,13 @@ package model;
 
 import java.sql.Date;
 
+/**
+ * This class represents an internship information, employer, job position, and
+ * from/to date for a student.
+ * 
+ * @author  Louis Yang
+ * @version 11-19-2016
+ */
 public class StudentInternship {
 	
 	/** Internship id */

@@ -11,12 +11,27 @@ import java.util.List;
 
 import model.StudentEmployment;
 
+/**
+ * This class contains methods to access StudentEmployment table data.
+ * The system allows to list, search, and add a StudentEmployment.
+ * 
+ * @author Jieun Lee (jieun212@uw.edu)
+ * @version 12-06-2016
+ */
 public class StudentEmploymentDB {
 	
+	/** A DB Connection */
 	private static Connection myConnection;
+	
+	/** A List of StudentSKill */
 	private static List<StudentEmployment> myStudentEmploymentList;
 	
-	// get all student-employments
+	/**
+	 * Get a list of StudentSKill.
+	 * 
+	 * @return A list of Student Skill.
+	 * @throws SQLException
+	 */
 	public static List<StudentEmployment> getStudentEmployments() throws SQLException {
 		if (myConnection == null) {
 			myConnection = DataConnection.getConnection();
@@ -53,6 +68,13 @@ public class StudentEmploymentDB {
 		return myStudentEmploymentList;
 	}
 	
+	/**
+	 * Return a list of StudentEmployment which is under given uwnetid
+	 * 
+	 * @param theUwnetId 
+	 * @returnA list of StudentEmployment which is under given uwnetid
+	 * @throws SQLException
+	 */
 	public static List<StudentEmployment> getStudentEmploymentsOfUWNetID(final String theUwnetId) throws SQLException {
 		if (myConnection == null) {
 			myConnection = DataConnection.getConnection();
@@ -72,7 +94,8 @@ public class StudentEmploymentDB {
 				Date date = rs.getDate("dateFrom");
 				String comment = rs.getString("comment");
 
-				StudentEmployment studentEmployment = new StudentEmployment(uwnetId, employer,  position, salary, date, comment);
+				StudentEmployment studentEmployment = new StudentEmployment(uwnetId, employer, position, salary, date,
+						comment);
 
 				studentEmployment.setId(id);
 				filteredList.add(studentEmployment);
@@ -89,7 +112,13 @@ public class StudentEmploymentDB {
 	}
 	
 	
-	// get stu-emp(stuemp id)
+	/**
+	 *  Get a StudentEmployment which has givne StudentSKill id.
+	 * 
+	 * @param theId StudentEmployment id
+	 * @return A StudentEmployment which has givne StudentSKill id.
+	 * @throws SQLException
+	 */
 	public static StudentEmployment getStudentEmployment(String theId) throws SQLException {
 		if (myConnection == null) {
 			myConnection = DataConnection.getConnection();
@@ -109,7 +138,8 @@ public class StudentEmploymentDB {
 				Date date = rs.getDate("dateFrom");
 				String comment = rs.getString("comment");
 
-				StudentEmployment studentEmployment = new StudentEmployment(uwnetId, employer,  position, salary, date, comment);
+				StudentEmployment studentEmployment = new StudentEmployment(uwnetId, employer, position, salary, date,
+						comment);
 
 				studentEmployment.setId(id);
 				return studentEmployment;
@@ -127,8 +157,13 @@ public class StudentEmploymentDB {
 	
 	
 	
-	
-	// add
+	/**
+	 * Add givne StudentEmployment into StudentEmployment table
+	 * 
+	 * @param theEmployemnt
+	 *            StudentEmployment
+	 * @return True if StudentEmployment is added succssfully.
+	 */
 	public static boolean add(StudentEmployment theEmployemnt) {
 		String sql = "insert into StudentEmployment(uwnetid, employer, position, salary, dateFrom, comment) values "
 				+ "(?, ?, ?, ?, ?, ?); ";
@@ -158,36 +193,5 @@ public class StudentEmploymentDB {
 		}
 		return true;
 	}
-	
-	// edit
-	public static String update(StudentEmployment theEmployment, String columnName, Object data) {
-		
-		String id = theEmployment.getId();
-		String sql = "UPDATE StudentEmployment SET `" + columnName
-				+ "` = ?  WHERE studentEmploymentId = ? ";
-
-		PreparedStatement preparedStatement = null;
-		try {
-			preparedStatement = myConnection.prepareStatement(sql);
-			if (data instanceof String) {
-				preparedStatement.setString(1, (String) data);
-			} else if (data instanceof Double) {
-				preparedStatement.setDouble(1, (Double) data);
-			} else if (data instanceof Date) { // for Date type
-				preparedStatement.setDate(1, (Date) data);
-			} else {
-				System.out.println(data.getClass().getName() + "");
-			}
-			preparedStatement.setString(2, id);
-			preparedStatement.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println(e);
-			e.printStackTrace();
-			return "Error updating StudentEmployment: " + e.getMessage();
-		}
-		return "Updated StudentEmployment Successfully";
-	
-	}
-	
 
 }

@@ -10,12 +10,27 @@ import java.util.List;
 
 import model.StudentDegree;
 
+/**
+ * This class contains methods to access StudentDegree table data.
+ * The system allows to list, search, and add a StudentDegree.
+ * 
+ * @author Jieun Lee (jieun212@uw.edu)
+ * @version 12-06-2016
+ */
 public class StudentDegreeDB {
 	
+	/** A DB Connection */
 	private static Connection myConnection;
+	
+	/** A List of StudentDegree */
 	private static List<StudentDegree> myStudentDegreeList;
 	
-	// get all student-degree
+	/**
+	 * Get a list of StudentDegree
+	 * 
+	 * @return A list of StudentDegree
+	 * @throws SQLException
+	 */
 	public static List<StudentDegree> getStudentDegrees() throws SQLException {
 		if (myConnection == null) {
 			myConnection = DataConnection.getConnection();
@@ -52,7 +67,14 @@ public class StudentDegreeDB {
 	}
 	
 	
-	// get student-degree
+	/**
+	 * Get a StudentDegree which has the givne StudentDegree id
+	 * 
+	 * @param theId
+	 *            StudentDegree id
+	 * @returnStudentDegree which has the givne StudentDegree id
+	 * @throws SQLException
+	 */
 	public static StudentDegree getStudentDegree(String theId) throws SQLException {
 		if (myConnection == null) {
 			myConnection = DataConnection.getConnection();
@@ -87,6 +109,14 @@ public class StudentDegreeDB {
 		return null;
 	}
 	
+	/**
+	 * Get a StudentDegree contains the given uwnet id and Degree id
+	 * 
+	 * @param theUwnetid 
+	 * @param theDegreeId
+	 * @return StudentDegree contains the given uwnet id and Degree id
+	 * @throws SQLException
+	 */
 	public static StudentDegree getStudentDegreeID(String theUwnetid, String theDegreeId) throws SQLException {
 		if (myConnection == null) {
 			myConnection = DataConnection.getConnection();
@@ -122,6 +152,13 @@ public class StudentDegreeDB {
 		return null;
 	}
 	
+	/**
+	 * Get a list of StudentDegree of given uw net id
+	 * 
+	 * @param theUwnetId
+	 * @return A list of StudentDegree of given uw net id
+	 * @throws SQLException
+	 */
 	public static List<StudentDegree> getStudentDegreeOfUWNetID(String theUwnetId) throws SQLException {
 		if (myConnection == null) {
 			myConnection = DataConnection.getConnection();
@@ -157,43 +194,14 @@ public class StudentDegreeDB {
 		return filteredList;
 	}
 	
-	public static StudentDegree getStudentDegreeOfDegreeID(String theDegreeId) throws SQLException {
-		if (myConnection == null) {
-			myConnection = DataConnection.getConnection();
-		}
-		Statement stmt = null;
-		String query = "SELECT * " + "FROM StudentDegree WHERE degreeId = '" + theDegreeId + "'";
-
-		try {
-			stmt = myConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			while (rs.next()) {
-				String id = rs.getString("studentDegreeId");
-				String uwId = rs.getString("uwnetId");
-				String degreeId = rs.getString("degreeId");
-				String term = rs.getString("graduation_term");
-				String year = rs.getString("graduation_year");
-				double gpa = rs.getDouble("gpa");
-				String transfer = rs.getString("transferCollege");
-				
-				StudentDegree studentDegree = new StudentDegree(uwId, degreeId, term, year, gpa, transfer);
-				studentDegree.setId(id);
-				
-				return studentDegree;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println(e);
-		} finally {
-			if (stmt != null) {
-				stmt.close();
-			}
-		}
-		return null;
-	}
 	
-	
-	// add student-degree
+	/**
+	 * Add StudentDegree into StudentDegree table
+	 * 
+	 * @param theDegree StudentDegree
+	 * @return True if StudentDegree is added succssfully.
+	 * @throws SQLException
+	 */
 	public static boolean addStudentDegree(StudentDegree theDegree) throws SQLException {
 		if (myConnection == null) {
 			myConnection = DataConnection.getConnection();
@@ -227,7 +235,15 @@ public class StudentDegreeDB {
 	}
 	
 	
-	// edit student-degree
+	/**
+	 * Update the given StudentDegree where the column name is the given columnName to the data
+	 * 
+	 * @param theDegree
+	 * @param columnName
+	 * @param data New data of the given columnName
+	 * @return True if StudentDegree is updated succssfully.
+	 * @throws SQLException
+	 */
 	public static boolean updateStudentDegree(StudentDegree theDegree, String columnName, Object data) throws SQLException {
 		if (myConnection == null) {
 			myConnection = DataConnection.getConnection();
@@ -257,6 +273,14 @@ public class StudentDegreeDB {
 	
 	}
 	
+	/**
+	 * Get a list of StudentDegree by given year and quarter
+	 * 
+	 * @param annual
+	 * @param quarter
+	 * @return a list of StudentDegree by given year and quarter
+	 * @throws SQLException
+	 */
 	public static List<StudentDegree> getStudentDegreeByYear(int annual, String quarter) throws SQLException {
 		if (myConnection == null) {
 			myConnection = DataConnection.getConnection();
@@ -297,6 +321,13 @@ public class StudentDegreeDB {
 		return myStudentDegreeList;
 	}
 	
+	/**
+	 * Get a list of StudentDegree by given year
+	 * 
+	 * @param annual
+	 * @return a list of StudentDegree by given year
+	 * @throws SQLException
+	 */
 	public static List<StudentDegree> getStudentDegreeByYear(int annual) throws SQLException {
 		return getStudentDegreeByYear(annual, null);
 	}
@@ -332,6 +363,14 @@ public class StudentDegreeDB {
 		return false;
 	}
 	
+	/**
+	 * Return true if the given student is in the rogram
+	 * 
+	 * @param theUWnetId
+	 * @param theDegreeId
+	 * @return
+	 * @throws SQLException
+	 */
 	public static boolean isInProgram(final String theUWnetId, final String theDegreeId) throws SQLException {
 		if (myConnection == null) {
 			myConnection = DataConnection.getConnection();
